@@ -11,10 +11,12 @@ Response {
     private Integer code;
     private String msg;
     private String token;
+    private String username;
 
 
-    public Response(Integer code, String msg, String token) {
+    public Response(Integer code, String username, String msg, String token) {
         this.code = code;
+        this.username = username;
         this.msg = msg;
         this.token = token;
     }
@@ -23,6 +25,7 @@ Response {
     public String toString() {
         return "Response{" +
                 "code=" + code +
+                ", username='" + username + '\'' +
                 ", msg='" + msg + '\'' +
                 ", token='" + token + '\'' +
                 '}';
@@ -52,6 +55,14 @@ Response {
         this.token = token;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -62,12 +73,13 @@ Response {
         }
         Response response = (Response) o;
         return Objects.equals(code, response.code) &&
+                Objects.equals(username, response.username) &&
                 Objects.equals(msg, response.msg) &&
                 Objects.equals(token, response.token);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, msg, token);
+        return Objects.hash(code, username, msg, token);
     }
 }

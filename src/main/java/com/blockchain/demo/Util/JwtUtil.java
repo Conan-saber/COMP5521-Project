@@ -31,7 +31,7 @@ public class JwtUtil {
     /**
      * Create user token,set token time
      */
-    public static String createToken(User user) {
+    public static String createToken(String username, String password) {
         //过期时间
         Date expireDate = new Date(System.currentTimeMillis() + EXPIRATION * 1000);
         Map<String, Object> map = new HashMap<>();
@@ -39,9 +39,8 @@ public class JwtUtil {
         map.put("typ", "JWT");
         String token = JWT.create()
                 .withHeader(map)
-                .withClaim("id", user.getUser_ID())
-                .withClaim("userName", user.getUser_name())
-                .withClaim("pw", user.getUser_pw())
+                .withClaim("userName", username)
+                .withClaim("pw", password)
                 .withExpiresAt(expireDate)
                 .withIssuedAt(new Date())
                 .sign(Algorithm.HMAC256(SECRET));

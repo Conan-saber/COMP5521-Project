@@ -49,20 +49,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response loginUser(@RequestBody User user) {
-        String uname = user.getUser_name();
-        String pwd = user.getUser_pw();
+    public Response loginUser(@RequestParam String username, String password) {
+        String uname = username;
+        String pwd = password;
         System.out.println("uname=" + uname + "pwd" + pwd);
         if (uname.equals("") || pwd.equals("")) {
-            String token = JwtUtil.createToken(user);
-            return new Response(100, "The user name or password cannot be empty", token);
+            String token = JwtUtil.createToken(username, password);
+            return new Response(100, uname, "The user name or password cannot be empty", token);
         } else {
             if (userMapper.login(uname, pwd) != null) {
-                String token = JwtUtil.createToken(user);
-                return new Response(200, "Success", token);
+                String token = JwtUtil.createToken(username, password);
+                return new Response(200, uname, "Success", token);
             } else {
-                String token = JwtUtil.createToken(user);
-                return new Response(500, "User does not exist / password is incorrect", token);
+                String token = JwtUtil.createToken(username, password);
+                return new Response(500, uname, "User does not exist / password is incorrect", token);
             }
         }
     }
@@ -77,23 +77,43 @@ public class UserController {
         String userName = request.getAttribute("userName").toString();
         return userMapper.findByID(id);
     }
-    @PostMapping("/registration")
-    public Response register(@RequestBody User user) {
-        String uname = user.getUser_name();
-        String pwd = user.getUser_pw();
+    @PostMapping("/register")
+    public Response register(@RequestParam String username, String password) {
+        String uname = username;
+        String pwd = password;
         if (uname.equals("") || pwd.equals("")) {
-            String token = JwtUtil.createToken(user);
-            return new Response(100, "The user name or password cannot be empty", token);
+            String token = JwtUtil.createToken(username, password);
+            return new Response(100, uname,"The user name or password cannot be empty", token);
         } else {
-            if (userMapper.registerByName(user.getUser_name()) == null) {
-                userMapper.register(user);
-                String token = JwtUtil.createToken(user);
-                return new Response(200, "Success", token);
+            if (userMapper.registerByName(username) == null) {
+                userMapper.register(username, password);
+                String token = JwtUtil.createToken(username, password);
+                return new Response(200, uname,"Success", token);
             } else {
-                return new Response(500, "Registration failed", "The user has existed ");
+                String token = JwtUtil.createToken(username, password);
+                return new Response(500, uname,"Registration failed, the user has existed", token);
             }
         }
     }
 
+    @PostMapping("/updatePw")
+    public Response updatePw(@RequestParam String username, String password, String newPassword) {
+        String uname = username;
+        String pwd = password;
+        String npwd = newPassword;
+        if (uname.equals("") || pwd.equals("")) {
+            String token = JwtUtil.createToken(username, password);
+            return new Response(100, uname,"The user name or password cannot be empty", token);
+        } else {
+            if (userMapper.registerByName(username) == null) {
+                userMapper.updatePwByName(username, newPassword);
+                String token = JwtUtil.createToken(username, newPassword);
+                return new Response(200, uname,"Success", token);
+            } else {
+                String token = JwtUtil.createToken(username, password);
+                return new Response(500, uname,"Modify password failed", token);
+            }
+        }
+    }
 
 }

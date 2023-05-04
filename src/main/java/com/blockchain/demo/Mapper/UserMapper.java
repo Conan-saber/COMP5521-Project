@@ -40,8 +40,11 @@ public interface UserMapper {
     @Transactional(rollbackFor = Exception.class)
     User registerByName(String userName);
 
-    @Update("INSERT INTO user_info(user_ID, user_name, user_email, user_pw, user_status, user_code, btc_wallet_id, btc_balance, eth_wallet_id, eth_balance, ltc_wallet_id, ltc_balance, stellar_wallet_id, stellar_balance, xrp_wallet_id, xrp_balance, fiat_wallet_id, fiat_balance) " +
-            "VALUES (#{user_ID},#{user_name},#{user_email},#{user_pw},#{user_status},#{user_code},#{btc_wallet_id},#{btc_balance},#{eth_wallet_id},#{eth_balance},#{ltc_wallet_id},#{ltc_balance},#{stellar_wallet_id},#{stellar_balance},#{xrp_wallet_id},#{xrp_balance},#{fiat_wallet_id},#{fiat_balance})")
+    @Update("INSERT INTO user_info(user_name, user_pw) VALUES (#{user_name}, #{user_pw})")
     @Transactional(rollbackFor = Exception.class)
-    void register(User user);
+    User register(@Param("user_name") String userName, @Param("user_pw") String userPw);
+
+    @Update("UPDATE user_info SET user_pw = #{user_pw} WHERE user_name = #{user_name}")
+    @Transactional(rollbackFor = Exception.class)
+    User updatePwByName(@Param("user_name") String username, @Param("user_pw") String newPassword);
 }

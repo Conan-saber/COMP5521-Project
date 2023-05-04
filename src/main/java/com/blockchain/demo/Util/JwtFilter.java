@@ -47,11 +47,11 @@ public class JwtFilter implements Filter {
                 response.getWriter().write("token is illegal！");
                 return;
             }
-            Integer id = userData.get("id").asInt();
+            //Integer id = userData.get("id").asInt();
             String pw = userData.get("pw").asString();
             String userName = userData.get("userName").asString();
             //拦截器 拿到用户信息，放到request中
-            request.setAttribute("id", id);
+            //request.setAttribute("id", id);
             request.setAttribute("pw", pw);
             request.setAttribute("userName", userName);
             chain.doFilter(req, res);
