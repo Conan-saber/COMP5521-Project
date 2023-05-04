@@ -82,7 +82,7 @@ public class UserController {
         String uname = username;
         String pwd = password;
         User user = userMapper.registerByName(username);
-        System.out.println("111111111111111111111"+ user);
+        //System.out.println("111111111111111111111"+ user);
 
         if (uname.equals("") || pwd.equals("")) {
             String token = JwtUtil.createToken(username, password);

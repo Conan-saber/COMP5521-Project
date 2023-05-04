@@ -51,7 +51,7 @@ public interface UserMapper {
     @Transactional(rollbackFor = Exception.class)
     void updatePwByName(@Param("user_name") String username, @Param("user_pw") String newPassword);
 
-    @Select("SELECT btc_wallet_id, eth_wallet_id, ltc_wallet_id, stellar_wallet_id, xrp_wallet_id, fiat_wallet_id\n" +
+    @Select("SELECT user_name, btc_wallet_id, eth_wallet_id, ltc_wallet_id, stellar_wallet_id, xrp_wallet_id, fiat_wallet_id\n" +
             "FROM user_info\n" +
             "WHERE user_name = #{user_name}")
     List<User> findByWalletByUserName(@Param("user_name") String userName);
