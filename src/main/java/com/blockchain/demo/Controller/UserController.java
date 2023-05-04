@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response loginUser(@RequestParam String username, String password) {
+    public Response loginUser(@RequestParam("username") String username, @RequestParam("password") String password) {
         String uname = username;
         String pwd = password;
         System.out.println("uname=" + uname + "pwd" + pwd);
@@ -78,7 +78,7 @@ public class UserController {
         return userMapper.findByName(userName);
     }
     @PostMapping("/register")
-    public Response register(@RequestParam String username, String password) {
+    public Response register(@RequestParam("username") String username, @RequestParam("password") String password) {
         String uname = username;
         String pwd = password;
         User user = userMapper.registerByName(username);
@@ -100,7 +100,7 @@ public class UserController {
     }
 
     @PostMapping("/updatePw")
-    public Response updatePw(@RequestParam String username, String password, String newPassword) {
+    public Response updatePw(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("newPassword") String newPassword) {
         String uname = username;
         String pwd = password;
         String npwd = newPassword;
