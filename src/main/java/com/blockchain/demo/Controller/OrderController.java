@@ -12,6 +12,7 @@ import java.util.List;
  * @author conanlee
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/order")
 public class OrderController {
     @Resource

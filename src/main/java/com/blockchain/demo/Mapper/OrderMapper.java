@@ -29,12 +29,12 @@ public interface OrderMapper {
     void save(Order order);
 
 
-    @Update("UPDATE order_info SET order_ID = #{order_ID, order_time = #{order_time], order_type = #{order_type}, order_origin = #{order_origin}, order_destination = #{order_destination}, " +
+    @Update("UPDATE order_info SET order_ID = #{order_ID}, order_time = #{order_time}, order_type = #{order_type}, order_origin = #{order_origin}, order_destination = #{order_destination}, " +
             "order_amount = #{order_amount}, order_fee = #{order_fee}, order_status = #{order_status} WHERE user_ID = #{user_ID}}")
     @Transactional(rollbackFor = Exception.class)
     void updateByUserId(Order order);
 
-    @Update("UPDATE order_info SET user_ID = #{user_ID}, order_time = #{order_time], order_type = #{order_type}, order_origin = #{order_origin}, " +
+    @Update("UPDATE order_info SET user_ID = #{user_ID}, order_time = #{order_time}, order_type = #{order_type}, order_origin = #{order_origin}, " +
             "order_destination = #{order_destination}, order_amount = #{order_amount}, order_fee = #{order_fee}, order_status = #{order_status} WHERE order_ID = #{order_ID}")
     @Transactional(rollbackFor = Exception.class)
     void updateByOrderId(Order order);
