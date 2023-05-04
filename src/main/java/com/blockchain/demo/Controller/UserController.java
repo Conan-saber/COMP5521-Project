@@ -72,15 +72,18 @@ public class UserController {
      */
     @RequestMapping("/secure/getUserInfo")
     public List<User> login(HttpServletRequest request) {
-        Integer id = (Integer) request.getAttribute("id");
+        //Integer id = (Integer) request.getAttribute("id");
         String pwd = request.getAttribute("pwd").toString();
         String userName = request.getAttribute("userName").toString();
-        return userMapper.findByID(id);
+        return userMapper.findByName(userName);
     }
     @PostMapping("/register")
     public Response register(@RequestParam String username, String password) {
         String uname = username;
         String pwd = password;
+        User user = userMapper.registerByName(username);
+        System.out.println("111111111111111111111"+ user);
+
         if (uname.equals("") || pwd.equals("")) {
             String token = JwtUtil.createToken(username, password);
             return new Response(100, uname,"The user name or password cannot be empty", token);

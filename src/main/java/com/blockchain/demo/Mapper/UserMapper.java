@@ -17,7 +17,10 @@ public interface UserMapper {
     List<User> findAll();
 
     @Select("select * from user_info where user_ID = #{user_ID}")
-    List<User> findByID(Integer userID);
+    List<User> findByID(@Param("user_ID") Integer userID);
+
+    @Select("select * from user_info where user_ID = #{user_ID}")
+    List<User> findByName(@Param("user_name") String userName);
 
     @Update("INSERT INTO user_info(user_ID, user_name, user_email, user_pw, user_status, user_code, btc_wallet_id, btc_balance, eth_wallet_id, eth_balance, ltc_wallet_id, ltc_balance, stellar_wallet_id, stellar_balance, xrp_wallet_id, xrp_balance, fiat_wallet_id, fiat_balance) " +
             "VALUES (#{user_ID},#{user_name},#{user_email},#{user_pw},#{user_status},#{user_code},#{btc_wallet_id},#{btc_balance},#{eth_wallet_id},#{eth_balance},#{ltc_wallet_id},#{ltc_balance},#{stellar_wallet_id},#{stellar_balance},#{xrp_wallet_id},#{xrp_balance},#{fiat_wallet_id},#{fiat_balance})")
@@ -31,7 +34,7 @@ public interface UserMapper {
 
     @Delete("DELETE from user_info where user_ID = #{user_ID}")
     @Transactional(rollbackFor = Exception.class)
-    void deleteById(Integer userID);
+    void deleteById(@Param("user_ID") Integer userID);
 
     @Select("select * from user_info where user_name=#{user_name} and user_pw=#{user_pw}")
     User login(@Param("user_name") String userName, @Param("user_pw") String userPw);
@@ -42,9 +45,14 @@ public interface UserMapper {
 
     @Update("INSERT INTO user_info(user_name, user_pw) VALUES (#{user_name}, #{user_pw})")
     @Transactional(rollbackFor = Exception.class)
-    User register(@Param("user_name") String userName, @Param("user_pw") String userPw);
+    void register(@Param("user_name") String userName, @Param("user_pw") String userPw);
 
     @Update("UPDATE user_info SET user_pw = #{user_pw} WHERE user_name = #{user_name}")
     @Transactional(rollbackFor = Exception.class)
-    User updatePwByName(@Param("user_name") String username, @Param("user_pw") String newPassword);
+    void updatePwByName(@Param("user_name") String username, @Param("user_pw") String newPassword);
+
+    @Select("SELECT btc_wallet_id, eth_wallet_id, ltc_wallet_id, stellar_wallet_id, xrp_wallet_id, fiat_wallet_id\n" +
+            "FROM user_info\n" +
+            "WHERE user_name = #{user_name}")
+    List<User> findByWalletByUserName(@Param("user_name") String userName);
 }
