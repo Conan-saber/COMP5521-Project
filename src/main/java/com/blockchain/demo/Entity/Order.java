@@ -14,8 +14,8 @@ public class Order {
     private String order_type;
     private String order_origin;
     private String order_destination;
-    private String order_amount;
-    private String order_fee;
+    private Double order_amount;
+    private Double order_fee;
     private String order_status;
 
 }

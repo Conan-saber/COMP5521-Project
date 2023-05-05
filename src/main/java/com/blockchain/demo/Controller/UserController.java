@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author conanlee
@@ -49,20 +50,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response loginUser(@RequestParam("username") String username, @RequestParam("password") String password) {
-        String uname = username;
-        String pwd = password;
-        System.out.println("uname=" + uname + "pwd" + pwd);
-        if (uname.equals("") || pwd.equals("")) {
+    public Response loginUser(@RequestBody Map params) {
+        String username = (String) params.get("username");
+        String password = (String) params.get("password");
+        System.out.println("uname=" + username + "pwd" + password);
+        if (username.equals("") || password.equals("")) {
             String token = JwtUtil.createToken(username, password);
-            return new Response(100, uname, "The user name or password cannot be empty", token);
+            return new Response(100, username, "The user name or password cannot be empty", token);
         } else {
-            if (userMapper.login(uname, pwd) != null) {
+            if (userMapper.login(username, password) != null) {
                 String token = JwtUtil.createToken(username, password);
-                return new Response(200, uname, "Success", token);
+                return new Response(200, username, "Success", token);
             } else {
                 String token = JwtUtil.createToken(username, password);
-                return new Response(500, uname, "User does not exist / password is incorrect", token);
+                return new Response(500, username, "User does not exist / password is incorrect", token);
             }
         }
     }
@@ -78,43 +79,44 @@ public class UserController {
         return userMapper.findByName(userName);
     }
     @PostMapping("/register")
-    public Response register(@RequestParam("username") String username, @RequestParam("password") String password) {
-        String uname = username;
-        String pwd = password;
+    public Response register(@RequestBody Map params) {
+        String username = (String) params.get("username");
+        String password = (String) params.get("password");
         User user = userMapper.registerByName(username);
         //System.out.println("111111111111111111111"+ user);
 
-        if (uname.equals("") || pwd.equals("")) {
+        if (username.equals("") || password.equals("")) {
             String token = JwtUtil.createToken(username, password);
-            return new Response(100, uname,"The user name or password cannot be empty", token);
+            return new Response(100, username,"The user name or password cannot be empty", token);
         } else {
             if (userMapper.registerByName(username) == null) {
                 userMapper.register(username, password);
                 String token = JwtUtil.createToken(username, password);
-                return new Response(200, uname,"Success", token);
+                return new Response(200, username,"Success", token);
             } else {
                 String token = JwtUtil.createToken(username, password);
-                return new Response(500, uname,"Registration failed, the user has existed", token);
+                return new Response(500, username,"Registration failed, the user has existed", token);
             }
         }
     }
 
     @PostMapping("/updatePw")
-    public Response updatePw(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("newPassword") String newPassword) {
-        String uname = username;
-        String pwd = password;
-        String npwd = newPassword;
-        if (uname.equals("") || pwd.equals("")) {
+    public Response updatePw(@RequestBody Map params) {
+//        @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("newPassword") String newPassword
+        String username = (String) params.get("username");
+        String password = (String) params.get("password");
+        String newPassword = (String) params.get("newPassword");
+        if (username.equals("") || newPassword.equals("")) {
             String token = JwtUtil.createToken(username, password);
-            return new Response(100, uname,"The user name or password cannot be empty", token);
+            return new Response(100, username,"The user name or password cannot be empty", token);
         } else {
             if (userMapper.registerByName(username) == null) {
                 userMapper.updatePwByName(username, newPassword);
                 String token = JwtUtil.createToken(username, newPassword);
-                return new Response(200, uname,"Success", token);
+                return new Response(200, username,"Success", token);
             } else {
                 String token = JwtUtil.createToken(username, password);
-                return new Response(500, uname,"Modify password failed", token);
+                return new Response(500, username,"Modify password failed", token);
             }
         }
     }
